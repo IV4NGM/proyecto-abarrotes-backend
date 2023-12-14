@@ -11,9 +11,17 @@ const createProduct = (req, res) => {
 }
 
 const findAllProducts = (req, res) => {
+  const { min_price: minPrice, max_price: maxPrice } = req.query
   ModelProducts.findAll()
     .then(rows => {
-      res.status(200).send(rows)
+      let products = [...rows]
+      if (minPrice) {
+        products = products.filter(product => Number(product.price) >= parseFloat(minPrice))
+      }
+      if (maxPrice) {
+        products = products.filter(product => Number(product.price) <= parseFloat(maxPrice))
+      }
+      res.status(200).send(products)
     })
     .catch(err => {
       res.status(400).send(err.message)
