@@ -68,7 +68,6 @@ const findOneSalePromise = (customerId, saleDate) => {
       }
     })
     .catch(err => {
-      console.log(err)
       throw new Error(err.message)
     })
 }
@@ -117,10 +116,8 @@ const findCustomerSales = (req, res) => {
 }
 
 const findDateSales = (req, res) => {
-  console.log('EJECUTANDO LLAMADA')
   ModelSales.findDate(req.params.saleDate)
     .then(sales => {
-      console.log('sales', sales)
       return Promise.all(sales.map(sale => {
         const { customer_id: customerId, sale_date: saleDate } = sale
         return findOneSalePromise(customerId, saleDate)
@@ -130,7 +127,6 @@ const findDateSales = (req, res) => {
       res.status(200).send(values)
     })
     .catch(err => {
-      console.log(err)
       res.status(400).send(err.message)
     })
 }
