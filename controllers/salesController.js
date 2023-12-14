@@ -10,7 +10,7 @@ const createSale = (req, res) => {
   ModelProducts.findAll()
     .then(rows => {
       const products = rows
-      // Seleccionar los Id de los productos activos:
+      // Seleccionar los Id de los productos:
       const validProductsId = products.map(product => product.product_id)
       // Verificar que los datos proporcionados sean correctos:
       req.body.products.forEach(productToRegister => {
