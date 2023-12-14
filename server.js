@@ -3,6 +3,7 @@ const express = require('express')
 
 const productsRoutes = require('./routes/productsRoutes')
 const customersRoutes = require('./routes/customersRoutes')
+const salesRoutes = require('./routes/salesRoutes')
 
 const app = express()
 
@@ -13,6 +14,7 @@ app.use(express.json())
 
 app.use('/api/v1', productsRoutes)
 app.use('/api/v1', customersRoutes)
+app.use('/api/v1', salesRoutes)
 
 app.listen(port, () => {
   console.log(`Servidor escuchando en el puerto ${port}`)
