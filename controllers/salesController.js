@@ -119,6 +119,7 @@ const findOneSale = (req, res) => {
 }
 
 const findAllSales = (req, res) => {
+  const { customer_id: customerId, min_amount: minAmount, max_amount: maxAmount, min_price: minPrice, max_price: maxPrice } = req.query
   ModelSales.findAll()
     .then(sales => {
       return Promise.all(sales.map(sale => {
@@ -127,7 +128,23 @@ const findAllSales = (req, res) => {
       }))
     })
     .then(values => {
-      res.status(200).send(values)
+      let sales = [...values]
+      if (customerId) {
+        sales = sales.filter(sale => sale.customer_id === parseInt(customerId))
+      }
+      if (minAmount) {
+        sales = sales.filter(sale => sale.products_amount >= parseInt(minAmount))
+      }
+      if (maxAmount) {
+        sales = sales.filter(sale => sale.products_amount <= parseInt(maxAmount))
+      }
+      if (minPrice) {
+        sales = sales.filter(sale => sale.total_price >= parseFloat(minPrice))
+      }
+      if (maxPrice) {
+        sales = sales.filter(sale => sale.total_price <= parseFloat(maxPrice))
+      }
+      res.status(200).send(sales)
     })
     .catch(err => {
       res.status(400).send(err.message)

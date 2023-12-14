@@ -11,10 +11,13 @@ const createProduct = (req, res) => {
 }
 
 const findAllProducts = (req, res) => {
-  const { min_price: minPrice, max_price: maxPrice } = req.query
+  const { product_id: productId, min_price: minPrice, max_price: maxPrice } = req.query
   ModelProducts.findAll()
     .then(rows => {
       let products = [...rows]
+      if (productId) {
+        products = products.filter(product => product.product_id === parseInt(productId))
+      }
       if (minPrice) {
         products = products.filter(product => Number(product.price) >= parseFloat(minPrice))
       }
