@@ -11,9 +11,20 @@ const createCustomer = (req, res) => {
 }
 
 const findAllCustomers = (req, res) => {
+  const { first_name: firstName, last_name: lastName, city } = req.query
   ModelCustomers.findAll()
     .then(rows => {
-      res.status(200).send(rows)
+      let customers = [...rows]
+      if (firstName) {
+        customers = customers.filter(customer => customer.first_name.toLowerCase() === firstName.toLowerCase())
+      }
+      if (lastName) {
+        customers = customers.filter((customer) => customer.last_name.toLowerCase() === lastName.toLowerCase())
+      }
+      if (city) {
+        customers = customers.filter(customer => customer.city.toLowerCase() === city.toLowerCase())
+      }
+      res.status(200).send(customers)
     })
     .catch(err => {
       res.status(400).send(err.message)
