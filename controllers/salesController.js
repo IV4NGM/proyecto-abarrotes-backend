@@ -11,7 +11,7 @@ const createSale = (req, res) => {
     .then(rows => {
       const products = rows
       // Seleccionar los Id de los productos activos:
-      const validProductsId = products.filter(product => product.active).map(product => product.product_id)
+      const validProductsId = products.map(product => product.product_id)
       // Verificar que los datos proporcionados sean correctos:
       req.body.products.forEach(productToRegister => {
         if (!validProductsId.includes(productToRegister.product_id)) {
