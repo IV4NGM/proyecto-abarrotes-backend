@@ -119,7 +119,7 @@ const findOneSale = (req, res) => {
 }
 
 const findAllSales = (req, res) => {
-  const { customer_id: customerId, min_amount: minAmount, max_amount: maxAmount, min_price: minPrice, max_price: maxPrice } = req.query
+  const { customer_id: customerId, sale_date: saleDate, min_amount: minAmount, max_amount: maxAmount, min_price: minPrice, max_price: maxPrice } = req.query
   ModelSales.findAll()
     .then(sales => {
       return Promise.all(sales.map(sale => {
@@ -131,6 +131,14 @@ const findAllSales = (req, res) => {
       let sales = [...values]
       if (customerId) {
         sales = sales.filter(sale => sale.customer_id === parseInt(customerId))
+      }
+      if (saleDate) {
+        sales = sales.filter(sale => {
+          const date = sale.sale_date
+          const dateWithoutTime = (date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate())
+          return dateWithoutTime === saleDate
+        }
+        )
       }
       if (minAmount) {
         sales = sales.filter(sale => sale.products_amount >= parseInt(minAmount))
@@ -159,8 +167,20 @@ const findCustomerSales = (req, res) => {
         return findOneSalePromise(customerId, saleDate)
       }))
     })
-    .then(values => {
-      res.status(200).send(values)
+    .then(sales => {
+      let totalProductsAmount = 0
+      let totalSalesPrice = 0
+      sales.forEach(sale => {
+        totalProductsAmount = totalProductsAmount + sale.products_amount
+        totalSalesPrice = totalSalesPrice + sale.total_price
+      })
+      const customerInfo = {
+        customer_id: parseInt(req.params.customerId),
+        total_products_amount: totalProductsAmount,
+        total_sales_price: totalSalesPrice,
+        sales
+      }
+      res.status(200).send(customerInfo)
     })
     .catch(err => {
       res.status(400).send(err.message)
