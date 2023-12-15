@@ -264,6 +264,8 @@ Método: `GET`
 http://localhost:3000/api/v1/sales/:customerId/:saleDate
 ```
 
+El parámetro `saleDate` debe tener formato `timestamp with time zone`. Por ejemplo: `2023-12-15T01:06:37.243Z`
+
 #### Find sales by customer_id
 
 Método: `GET`
@@ -279,3 +281,5 @@ Método: `GET`
 ```
 http://localhost:3000/api/v1/sales/date/:saleDate
 ```
+
+El parámetro `saleDate` debe tener formato `timestamp with time zone`. Por ejemplo: `2023-12-15T01:06:37.243Z`.
