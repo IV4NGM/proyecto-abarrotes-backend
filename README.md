@@ -283,3 +283,7 @@ http://localhost:3000/api/v1/sales/date/:saleDate
 ```
 
 El parámetro `saleDate` debe tener formato `timestamp with time zone`. Por ejemplo: `2023-12-15T01:06:37.243Z`.
+
+## Mis datos de contacto
+
+Para cualquier comentario puedes mandarme un correo electrónico a: [ivangm_01@hotmail.com](mailto:ivangm_01@hotmail.com "mailto:ivangm_01@hotmail.com").
